@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "chatweb-b566c": {
+      "hosting": {
+        "chat": [
+          "chatweb-b566c"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "chatweb-b566c"
+  }
+}
