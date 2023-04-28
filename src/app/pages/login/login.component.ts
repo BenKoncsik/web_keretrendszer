@@ -3,6 +3,9 @@ import { FormControl } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import {Router} from "@angular/router";
 import {Observable, Subscription} from "rxjs";
+import {UserService} from "../../shared/services/user.service";
+import {User} from "../../shared/models/User";
+import {user} from "@angular/fire/auth";
 
 
 
@@ -20,7 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy{
 
   loading: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService, private userService: UserService) { }
 
   ngOnInit(): void {
   }
@@ -32,8 +35,15 @@ export class LoginComponent implements OnInit, OnDestroy{
     }
     this.authService.login(this.email.value, this.password.value).then(cred => {
       console.log(cred);
-      this.router.navigateByUrl('/main');
+      this.userService.getByIdOne(cred.user?.uid as string).subscribe((u: User | null) =>{
+        if(u){
+          u.active = true;
+          u.lastActive = new Date()
+          this.userService.update(u);
+        }
+      })
       this.loading = false;
+      this.router.navigateByUrl('/main');
     }).catch(error => {
       console.error(error);
       this.loading = false;

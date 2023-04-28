@@ -18,15 +18,5 @@ export class MenuComponent {
       this.onLogout.emit(logout);
     }
   }
-  menuSwitch() {
-    this.selectedPage.emit(this.currentPage);
-  }
 
-  ngOnInit(): void {
-    console.log('ngOnInit called.');
-  }
-
-  ngAfterViewInit(): void {
-    console.log('ngAfterViewInit called.');
-  }
 }

@@ -1,15 +1,16 @@
-<div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="20px">
-  <div fxFlex="300px" *ngFor="let user of users">
-    <mat-card>
+<div fxLayout="row wrap" fxLayoutAlign="space-around" style="margin-top: 10px">
+  <div fxFlex.gt-sm="31%" fxFlex.md="48%" fxFlex.sm="98%" *ngFor="let user of users" >
+    <mat-card (click)="startChat(user.email)"  style="margin-top: 10px; cursor: pointer; user-select: none;" *ngIf="!(user.email === loggedUser.email)">
       <mat-card-header>
         <mat-card-title>{{ user.name }}</mat-card-title>
         <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <p>Last Active: {{ user.lastActive | date }}</p>
+        <p>Last Active: {{ ( user.lastActive |  date: 'yyyy/MM/dd HH:mm:ss') }}</p>
         <p>Status: {{ user.active ? 'Active' : 'Inactive' }}</p>
       </mat-card-content>
     </mat-card>
   </div>
 </div>
+
 

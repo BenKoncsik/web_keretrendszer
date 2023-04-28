@@ -9,11 +9,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/main/main.module').then(m => m.MainModule),
     canActivate: [AuthGuard]
   },
-  // {
-  //   path: 'gallery',
-  //   loadChildren: () => import('./pages/gallery/gallery.module').then(m => m.GalleryModule),
-  //   canActivate: [AuthGuard]
-  // },
+  {
+    path: 'chat',
+    loadChildren: () => import('./pages/chat/chat.module').then(m => m.ChatModule),
+    canActivate: [AuthGuard]
+  },
   // {
   //   path: 'contact',
   //   loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule)

@@ -1,0 +1,25 @@
+<mat-list *ngIf="chat && chat.messages">
+  <mat-list-item *ngFor="let message of chat.messages">
+    <div
+      [ngClass]="{
+        'message-right': message.sender === loggedUser.email,
+        'message-left': message.sender !== loggedUser.email
+      }"
+    >
+      <div class="message-content">
+        <span>{{ message.text }}</span>
+        <small class="sender">{{ message.sender }}</small>
+        <small class="sent-date">{{ message.send }}</small>
+      </div>
+    </div>
+  </mat-list-item>
+</mat-list>
+
+
+<div class="input-container">
+  <mat-form-field class="input-field">
+    <input matInput placeholder="Üzenet írása" [(ngModel)]="messageInput" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="sendMessage()">Küldés</button>
+</div>
+
