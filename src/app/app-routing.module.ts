@@ -9,15 +9,27 @@ const routes: Routes = [
     loadChildren: () => import('./pages/main/main.module').then(m => m.MainModule),
     canActivate: [AuthGuard]
   },
+  // {
+  //   path: 'gallery',
+  //   loadChildren: () => import('./pages/gallery/gallery.module').then(m => m.GalleryModule),
+  //   canActivate: [AuthGuard]
+  // },
+  // {
+  //   path: 'contact',
+  //   loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule)
+  // },
+  {
+    path: 'not-found',
+    loadChildren: () => import('./pages/not-found/not-found.module').then(m => m.NotFoundModule)
+  },
   {
     path: '',
     redirectTo: '/login',
     pathMatch: 'full'
   },
   { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
-  { path: 'main', loadChildren: () => import('./pages/main/main.module').then(m => m.MainModule) },
   { path: 'signup', loadChildren: () => import('./pages/signup/signup.module').then(m => m.SignupModule) },
- // { path: 'signup', loadChildren: () => import('./pages/signup/signup.module').then(m => m.SignupModule) },
+  { path: 'not-found', loadChildren: () => import('./pages/not-found/not-found.module').then(m => m.NotFoundModule) },
   {
     path: '**',
     redirectTo: '/not-found'

@@ -1,6 +1,8 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav>
-    <app-menu (selectedPage)="changePage($event)" [currentPage]="page" *ngIf="page" (onCloseSidenav)="onClose($event, sidenav)" [loggedInUser]="loggedInUser" (onLogout)="logout($event)"></app-menu>
+    <app-menu (selectedPage)="changePage($event)" [currentPage]="page" *ngIf="page"
+              (onCloseSidenav)="onClose($event, sidenav)" [loggedInUser]="loggedInUser"
+              (onLogout)="logout($event)"></app-menu>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
@@ -12,12 +14,19 @@
       <div>Caht</div>
       <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
         <ul fxLayout fxLayoutGap="10px" class="navigation-items">
-          <li *ngIf="!(loggedInUser)"><a routerLink="/login">Login</a></li>
+          <li *ngIf="!loggedInUser"><a routerLink="/login">Login</a></li>
+          <li *ngIf="!loggedInUser"><a routerLink="/signup">Sign Up</a></li>
           <li *ngIf="loggedInUser"><a routerLink="/login" (click)="logout()">Logout</a></li>
+          <li *ngIf="loggedInUser"><a routerLink="/main">Home</a></li>
+          <li *ngIf="loggedInUser"><a routerLink="/members">Members</a></li>
+          <li *ngIf="loggedInUser"><a routerLink="/groups">Groups</a></li>
 
         </ul>
       </div>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <!--    a pagek betőltése: -->
+    <div id="content">
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

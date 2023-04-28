@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
+import {Router} from "@angular/router";
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -18,7 +19,7 @@ export class SignupComponent {
     })
   });
 
-  constructor(private location: Location, private authService: AuthService) {
+  constructor(private router: Router, private location: Location, private authService: AuthService) {
   }
 
   ngOnInit(): void {}
@@ -30,11 +31,12 @@ export class SignupComponent {
     if (email !== null && email !== undefined && password !== null && password !== undefined) {
       this.authService.signup(email, password).then(cred => {
         console.log(cred);
+        this.router.navigateByUrl('/login');
       }).catch(error => {
         console.error(error);
       });
     } else {
-      // Kezelje a hibás bevitelt, például jelenítse meg egy hibaüzenetet.
+
     }
   }
 

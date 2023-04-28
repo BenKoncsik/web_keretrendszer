@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {MatSidenav} from "@angular/material/sidenav";
-import {NavigationEnd, Router} from "@angular/router";
-import {AuthService} from "./shared/services/auth.service";
-import {filter} from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
+import { AuthService } from './shared/services/auth.service';
 
 
 @Component({
@@ -32,6 +32,7 @@ export class AppComponent implements OnInit{
     this.authService.isUserLoggedIn().subscribe(user => {
       console.log(user);
       this.loggedInUser = user;
+      console.log("loged user: " + user != null)
       localStorage.setItem('user', JSON.stringify(this.loggedInUser));
     }, error => {
       console.error(error);

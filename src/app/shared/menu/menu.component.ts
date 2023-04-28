@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, OnInit, AfterViewInit, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-menu',
@@ -17,5 +17,16 @@ export class MenuComponent {
     if (logout === true) {
       this.onLogout.emit(logout);
     }
+  }
+  menuSwitch() {
+    this.selectedPage.emit(this.currentPage);
+  }
+
+  ngOnInit(): void {
+    console.log('ngOnInit called.');
+  }
+
+  ngAfterViewInit(): void {
+    console.log('ngAfterViewInit called.');
   }
 }
