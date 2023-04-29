@@ -1,0 +1,26 @@
+<div *ngIf="isOpen">
+  <mat-nav-list>
+    <ng-container *ngFor="let user of users">
+      <a
+        mat-list-item
+        [ngStyle]="selectedChat === user.email ? {'background-color': '#7b1fa2'} : {}"
+        (click)="openChat(user.email, false)"
+      >
+        <mat-icon>user</mat-icon>
+        <span>{{ user.name }}</span>
+      </a>
+    </ng-container>
+  </mat-nav-list>
+  <mat-nav-list>
+    <ng-container *ngFor="let group of groups">
+      <a
+        mat-list-item
+        [ngStyle]="selectedChat === group.id ? {'background-color': '#7b1fa2'} : {}"
+        (click)="openChat(group.id, true)"
+      >
+        <mat-icon>user</mat-icon>
+        <span>{{ group.name }}</span>
+      </a>
+    </ng-container>
+  </mat-nav-list>
+</div>

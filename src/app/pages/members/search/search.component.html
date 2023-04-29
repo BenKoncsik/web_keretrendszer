@@ -1,0 +1,8 @@
+<mat-form-field>
+  <input matInput #input [matAutocomplete]="auto" [formControl]="searchControl"  placeholder="Search">
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event);  input.value = ''" [displayWith]="displayUser" panelWidth="auto">
+    <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+      {{ user.name }} - {{ user.email }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

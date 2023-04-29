@@ -1,4 +1,5 @@
-<h1 style="text-align: center">Online users</h1>
+<h1 style="text-align: center">All users</h1>
+<!--<app-search></app-search>-->
 <div fxLayout="row wrap" fxLayoutAlign="space-around" style="margin-top: 10px">
   <div fxFlex.gt-sm="31%" fxFlex.md="48%" fxFlex.sm="98%" *ngFor="let user of users" >
     <mat-card (click)="startChat(user.email)"  style="margin-top: 10px; cursor: pointer; user-select: none;" *ngIf="!(user.email === loggedUser.email)">
@@ -13,5 +14,3 @@
     </mat-card>
   </div>
 </div>
-
-

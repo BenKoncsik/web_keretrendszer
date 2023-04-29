@@ -1,0 +1,39 @@
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover, a:active {
+  color: lightgray;
+}
+div {
+  height: 92vh;
+  border-right: 1px solid #999999;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover, a:active {
+  color: lightgray;
+}
+
+.navigation-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media screen and (min-width: 600px){
+div{
+  width: 250px;
+};
+}
+
+@media screen and (max-width: 599px){
+  div{
+    width: 100%;
+  };
+}

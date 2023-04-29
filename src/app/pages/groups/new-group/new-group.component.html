@@ -1,0 +1,32 @@
+
+<div class="main_component">
+  <mat-form-field>
+    <mat-label for="email">Group Name </mat-label><input matInput type="text" [formControl]="groupName" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput [matAutocomplete]="auto" [formControl]="searchControl" placeholder="Search">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayUser" panelWidth="auto">
+      <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+        {{ user.name }} - {{ user.email }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <mat-list>
+    <mat-list-item *ngFor="let user of selectedUser">
+      <span>{{ user.name }}</span>
+      <span>{{ user.email }}</span>
+      <button mat-icon-button color="primary" *ngIf="selectedUser.includes(user)" (click)="removeSelectedItem(user)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button color="accent" *ngIf="!selectedUser.includes(user)" (click)="selectItem(user)">
+        <mat-icon>add_circle</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-list>
+
+  <span>
+        <span><button mat-raised-button color="primary" (click)="createNewGroup()">Create</button></span>
+    </span>
+</div>

@@ -1,25 +1,28 @@
-<mat-list *ngIf="chat && chat.messages">
-  <mat-list-item *ngFor="let message of chat.messages">
-    <div
-      [ngClass]="{
-        'message-right': message.sender === loggedUser.email,
-        'message-left': message.sender !== loggedUser.email
-      }"
-    >
-      <div class="message-content">
-        <span>{{ message.text }}</span>
-        <small class="sender">{{ message.sender }}</small>
-        <small class="sent-date">{{ message.send }}</small>
-      </div>
-    </div>
-  </mat-list-item>
-</mat-list>
+<div class="container" fxHide.xs>
+  <app-chat-menu [users]="users" [groups]="groups" [selectedChat]="chatId"
+                 (switchChat)="switchLoadChat($event)"></app-chat-menu>
 
 
-<div class="input-container">
-  <mat-form-field class="input-field">
-    <input matInput placeholder="Üzenet írása" [(ngModel)]="messageInput" />
-  </mat-form-field>
-  <button mat-raised-button color="primary" (click)="sendMessage()">Küldés</button>
+  <div class="page-container">
+        <app-message (sendMessageEmitter)="sendMessage($event)" [loggedUser]="loggedUser" [chat]="chat"></app-message>
+  </div>
+<button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" class="settings" (click)="openSettings()">
+  <mat-icon>settings</mat-icon>
+</button>
 </div>
+
+<mat-tab-group *ngIf="isVisibleOnXs" class="chat-tab" [(selectedIndex)]="selectedIndex">
+  <mat-tab label="Chats">
+    <app-chat-menu [users]="users" [groups]="groups" [selectedChat]="chatId"
+                   (switchChat)="switchLoadChat($event)"></app-chat-menu>
+  </mat-tab>
+  <mat-tab label="Message">
+    <app-message (sendMessageEmitter)="sendMessage($event)" [loggedUser]="loggedUser" [chat]="chat"
+                 ></app-message>
+  </mat-tab>
+  <mat-tab label="Chat settings">
+    <app-settings [dialog]="false" [chat]="chat" [loggedUser]="loggedUser"></app-settings>
+  </mat-tab>
+</mat-tab-group>
+
 

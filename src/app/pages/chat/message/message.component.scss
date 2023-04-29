@@ -8,14 +8,12 @@ $primary-color: #7b1fa2;
   color: black;
   width: 100%;
 }
-app-message{
-  height: 100%;
-}
 
 .message-right {
   align-items: flex-end;
 }
-.message-left{
+
+.message-left {
   align-items: flex-start;
 }
 
@@ -55,56 +53,55 @@ app-message{
   color: #999999;
   position: relative;
 }
-.mat-mdc-tab-body.mat-mdc-tab-body-active{
-  height: 100%;
-}
-
-.page-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  align-self: flex-end;
-}
-
-
-.mat-tab-group-custom {
-  height: 90vh;
-}
 
 .input-container {
   flex-shrink: 0;
 }
-@media screen and (min-width: 938px){
-  .input-field{
+
+.message-scroll-container {
+  height: 90%;
+  overflow-y: auto;
+}
+
+@media screen and (min-width: 938px) {
+  .input-field {
     width: 90%;
+  }
+  mat-list {
+    flex-grow: 1;
   }
 }
 
-@media screen and (max-width: 937px){
+@media screen and (max-width: 937px) {
+  .input-field {
+    width: 100%;
+  }
+  .input-field button {
+    width: 100%;
+  }
+  .message-scroll-container {
+   height: 80%;
+  }
+
+  mat-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    height: 90%;
+  }
+}
+
+@media screen and (max-width: 599px){
   .input-field{
     width: 100%;
   }
   .input-field button{
     width: 100%;
   }
+  .message-scroll-container {
+    min-height: 500px;
+    height: 20%;
+  }
+
 }
 
-.container {
-  display: flex;
-  height: 92vh;
-}
-.mat-mdc-tab-body-wrapper{
-  height: 100%;
-  overflow-y: hidden;
-}
 
-.chat-tab{
-  overflow: hidden;
-}
-
-.settings{
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-}

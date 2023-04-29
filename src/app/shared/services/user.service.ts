@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Query} from '@angular/core';
 import {User} from "../models/User";
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {Firestore} from "@angular/fire/firestore";
@@ -36,6 +36,33 @@ export class UserService {
     );
   }
 
+  getAllOrderByLastActive() {
+    return this.store.collection<User>(this.collectionName, ref => ref.orderBy('lastActive', 'desc')).snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data: User = a.payload.doc.data() as User;
+        if (data.lastActive) {
+          const timestamp: Timestamp = data.lastActive as Timestamp;
+          data.lastActive = timestamp.toDate();
+        }
+
+        return data;
+      }))
+    );
+  }
+
+  getAllOrderByActive() {
+    return this.store.collection<User>(this.collectionName, ref => ref.where('active', '==', true).orderBy('lastActive', 'desc')).snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data: User = a.payload.doc.data() as User;
+        if (data.lastActive) {
+          const timestamp: Timestamp = data.lastActive as Timestamp;
+          data.lastActive = timestamp.toDate();
+        }
+
+        return data;
+      }))
+    );
+  }
   getById(id: string) {
     return this.store.collection<User>(this.collectionName).doc(id).valueChanges();
   }

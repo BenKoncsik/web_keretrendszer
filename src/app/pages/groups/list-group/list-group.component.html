@@ -1,0 +1,13 @@
+<div class="card-container">
+  <mat-card class="card" *ngFor="let chat of groupsChat" (click)="open(chat)">
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>{{ chat.name }}</mat-card-title>
+        <mat-card-subtitle>{{ chat.members[0] }}</mat-card-subtitle>
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content>
+
+    </mat-card-content>
+  </mat-card>
+</div>

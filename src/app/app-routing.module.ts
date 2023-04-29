@@ -14,10 +14,16 @@ const routes: Routes = [
     loadChildren: () => import('./pages/chat/chat.module').then(m => m.ChatModule),
     canActivate: [AuthGuard]
   },
-  // {
-  //   path: 'contact',
-  //   loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule)
-  // },
+  {
+    path: 'members',
+    loadChildren: () => import('./pages/members/members.module').then(m => m.MembersModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'groups',
+    loadChildren: () => import('./pages/groups/groups.module').then(m => m.GroupsModule),
+    canActivate: [AuthGuard]
+  },
   {
     path: 'not-found',
     loadChildren: () => import('./pages/not-found/not-found.module').then(m => m.NotFoundModule)
@@ -30,6 +36,7 @@ const routes: Routes = [
   { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
   { path: 'signup', loadChildren: () => import('./pages/signup/signup.module').then(m => m.SignupModule) },
   { path: 'not-found', loadChildren: () => import('./pages/not-found/not-found.module').then(m => m.NotFoundModule) },
+
   {
     path: '**',
     redirectTo: '/not-found'
