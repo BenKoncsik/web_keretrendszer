@@ -21,11 +21,14 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire/compat';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CustomDatePipePipe } from './shared/pipes/custume-date.pipe';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
+    // CustomDatePipePipe,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +50,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSnackBarModule
   ],
   providers: [],
+  exports: [
+    // CustomDatePipePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

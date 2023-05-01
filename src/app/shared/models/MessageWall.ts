@@ -1,6 +1,6 @@
-export interface Message_1 {
+export interface MessageWall {
   text: string;
   send: any;
   sender: string;
-  imageUrl: string;
+  id: string;
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {User} from "../../../shared/models/User";
 import {UserService} from "../../../shared/services/user.service";
@@ -17,15 +17,18 @@ import {ChatService} from "../../../shared/services/chat.service";
   styleUrls: ['./new-group.component.scss']
 })
 export class NewGroupComponent implements OnInit{
-  public groupName: FormControl<string | null> = new FormControl('');
+  @Input() public title: string = '';
+  public groupName: FormControl<string | null> = new FormControl(this.title);
   public users: User[] = [];
-  public selectedUser: User[] = [];
+  @Input() public selectedUser: User[] = [];
+  @Output() public selectedUserOut: EventEmitter<User[]> = new EventEmitter<User[]>()
   public searchControl: FormControl<any> = new FormControl();
   public filteredUsers!: Observable<User[]>;
   private loggedUser: User = JSON.parse(localStorage.getItem('user') as string);
 
-
-
+  @Input() public isGroup: boolean = true;
+  @Input() public changeSettings: boolean = false;
+  @Output() public groupNameOut: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private userService: UserService, private _snackBar: MatSnackBar, private chatService: ChatService) {
    this.initSearchControl();
@@ -64,6 +67,7 @@ export class NewGroupComponent implements OnInit{
     if (!this.selectedUser.includes(item)) {
       this.selectedUser.push(item);
       this.searchControl.reset('');
+      this.selectedUserOut.emit(this.selectedUser);
     }
   }
 
@@ -74,6 +78,7 @@ export class NewGroupComponent implements OnInit{
       this.searchControl.reset(null);
       this.searchControl.setValue(null)
       this.initSearchControl();
+      this.selectedUserOut.emit(this.selectedUser);
     }
   }
   private _filterUsers(value: string): User[] {
@@ -89,11 +94,9 @@ export class NewGroupComponent implements OnInit{
     const index = this.selectedUser.indexOf(item);
     if (index > -1) {
       this.selectedUser.splice(index, 1);
-      setTimeout(() => {
         this.searchControl.reset('');
         this.searchControl.setValue(null);
-
-      }, 0);
+        this.selectedUserOut.emit(this.selectedUser);
       this.searchControl.clearValidators();
     }
   }
@@ -103,7 +106,13 @@ export class NewGroupComponent implements OnInit{
     this.userService.getAll().subscribe(user =>{
       this.users = user.filter(u => u.email != this.loggedUser.email);
     });
+    this.groupName.setValue(this.title);
 
+    this.groupName.valueChanges.subscribe(name => {
+      if (name) {
+        this.groupNameOut.emit(name);
+      }
+    });
 
   }
 
@@ -114,6 +123,8 @@ export class NewGroupComponent implements OnInit{
   displayUser(user: User): string {
     return user ? user.name + " - " + user.email : '';
   }
+
+
 
 
 }

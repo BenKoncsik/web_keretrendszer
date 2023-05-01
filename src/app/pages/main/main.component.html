@@ -7,11 +7,15 @@
         <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <p>Last Active: {{ ( user.lastActive |  date: 'yyyy/MM/dd HH:mm:ss') }}</p>
+        <p>Last Active: {{ ( user.lastActive | customDatePipe ) }}</p>
         <p>Status: {{ user.active ? 'Online' : 'Offline' }}</p>
       </mat-card-content>
     </mat-card>
   </div>
 </div>
+
+
+<app-message-wall></app-message-wall>
+
 
 

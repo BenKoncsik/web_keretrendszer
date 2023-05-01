@@ -6,7 +6,7 @@
   <div class="page-container">
         <app-message (sendMessageEmitter)="sendMessage($event)" [loggedUser]="loggedUser" [chat]="chat"></app-message>
   </div>
-<button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" class="settings" (click)="openSettings()">
+<button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" class="settings" (click)="openSettings(false)">
   <mat-icon>settings</mat-icon>
 </button>
 </div>
@@ -20,8 +20,8 @@
     <app-message (sendMessageEmitter)="sendMessage($event)" [loggedUser]="loggedUser" [chat]="chat"
                  ></app-message>
   </mat-tab>
-  <mat-tab label="Chat settings">
-    <app-settings [dialog]="false" [chat]="chat" [loggedUser]="loggedUser"></app-settings>
+  <mat-tab label="Chat settings" >
+    <app-settings *ngIf="chat" [dialog]="false" [chat]="chat" [loggedUser]="loggedUser" [title]="chat.name"></app-settings>
   </mat-tab>
 </mat-tab-group>
 

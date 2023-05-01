@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from "../../shared/models/User";
 import {UserService} from "../../shared/services/user.service";
-import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import {Router} from "@angular/router";
+import {ActiveChat} from "../../shared/models/ActiveChat";
+import {ActiveChatService} from "../../shared/services/active-chat.service";
 
 
 
@@ -27,4 +28,5 @@ export class MainComponent implements OnInit{
   startChat(email: string): void{
     this.router.navigateByUrl('/chat?cid='+email+"&group=false");
   }
+  protected readonly Date = Date;
 }

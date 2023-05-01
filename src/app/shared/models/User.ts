@@ -6,7 +6,7 @@ type Timestamp = firebase.firestore.Timestamp;
 export interface User {
   id: string;
   email: string;
-  name: String;
+  name: string;
   lastActive: any;
   active: boolean;
 }

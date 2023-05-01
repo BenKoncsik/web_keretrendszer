@@ -40,4 +40,8 @@ export class ChatService {
     return this.store.collection<ChatItem>(this.collectionName, ref =>
       ref.where('group', '==', true).where('members', 'array-contains', email)).valueChanges();
   }
+
+  delete(id: string){
+    return this.store.collection(this.collectionName).doc(id).delete();
+  }
 }

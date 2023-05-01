@@ -17,6 +17,8 @@ import { MessageComponent } from './message/message.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatCardModule} from "@angular/material/card";
+import {GroupsModule} from "../groups/groups.module";
+
 
 
 @NgModule({
@@ -38,8 +40,9 @@ import {MatCardModule} from "@angular/material/card";
     ExtendedModule,
     MatTabsModule,
     MatDialogModule,
-    MatCardModule
-  ]
+    MatCardModule,
+    GroupsModule
+   ]
 })
 export class ChatModule{
 

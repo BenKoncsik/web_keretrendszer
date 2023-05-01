@@ -67,6 +67,7 @@ export class UserService {
     return this.store.collection<User>(this.collectionName).doc(id).valueChanges();
   }
 
+
   getByEmail(email: string){
     return this.store.collection<User>(this.collectionName, ref => ref.where('email', '==', email).limit(1)).get()
   }

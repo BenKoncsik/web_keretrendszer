@@ -19,9 +19,9 @@ export class AuthGuard implements CanActivate {
     const user = JSON.parse(localStorage.getItem('user') as string);
     if (user) {
       //kiszedve mert túl sok a kérés! Amuggy élesbe ez menne.
-      /*this.authService.isUserLoggedIn().subscribe(u =>{
+      this.authService.isUserLoggedIn().subscribe(u =>{
         return u != null;
-      })*/
+      })
       return true;
     }
     return false;

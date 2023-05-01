@@ -20,27 +20,30 @@ import {MatCardModule} from "@angular/material/card";
 
 
 @NgModule({
-  declarations: [
-    GroupsComponent,
-    NewGroupComponent,
-    ListGroupComponent
-  ],
-  imports: [
-    CommonModule,
-    GroupsRoutingModule,
-    FormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatListModule,
-    MatIconModule,
-    MatAutocompleteModule,
-    NgMultiSelectDropDownModule,
-    MatSelectModule,
-    MatChipsModule,
-    MatLegacyChipsModule,
-    MatCardModule
-  ]
+    declarations: [
+        GroupsComponent,
+        NewGroupComponent,
+        ListGroupComponent
+    ],
+    exports: [
+        NewGroupComponent
+    ],
+    imports: [
+        CommonModule,
+        GroupsRoutingModule,
+        FormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatListModule,
+        MatIconModule,
+        MatAutocompleteModule,
+        NgMultiSelectDropDownModule,
+        MatSelectModule,
+        MatChipsModule,
+        MatLegacyChipsModule,
+        MatCardModule
+    ]
 })
 export class GroupsModule { }

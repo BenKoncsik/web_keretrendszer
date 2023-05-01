@@ -62,6 +62,12 @@ $primary-color: #7b1fa2;
   height: 90%;
   overflow-y: auto;
 }
+.message-content-img img {
+  max-height: 200px;
+  width: auto;
+  object-fit: cover;
+  object-position: top;
+}
 
 @media screen and (min-width: 938px) {
   .input-field {

@@ -6,6 +6,7 @@ import {Observable, Subscription} from "rxjs";
 import {UserService} from "../../shared/services/user.service";
 import {User} from "../../shared/models/User";
 import {user} from "@angular/fire/auth";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 
@@ -23,7 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy{
 
   loading: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService, private userService: UserService) { }
+  constructor(private router: Router, private authService: AuthService, private userService: UserService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
@@ -31,6 +32,7 @@ export class LoginComponent implements OnInit, OnDestroy{
   async login() {
     this.loading = true;
     if(this.email.value == null || this.password.value == null){
+      this.snackBar.open("Email or password null!");
       return;
     }
     this.authService.login(this.email.value, this.password.value).then(cred => {
@@ -46,6 +48,7 @@ export class LoginComponent implements OnInit, OnDestroy{
       this.router.navigateByUrl('/main');
     }).catch(error => {
       console.error(error);
+      this.snackBar.open("Email or password not valid!");
       this.loading = false;
     });
   }

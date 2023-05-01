@@ -1,0 +1,32 @@
+<div class="input-container">
+  <mat-form-field class="input-field">
+    <input matInput placeholder="Writing a Message" [(ngModel)]="messageInput"/>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="sendMessageEmit()">Send</button>
+</div>
+
+<div class="message-scroll-container">
+  <mat-list *ngIf="messageWall">
+    <mat-card class="card" *ngFor="let message of messageWall">
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-subtitle>{{ message.sender }}</mat-card-subtitle>
+        </mat-card-title-group>
+
+      </mat-card-header>
+      <mat-card-content>
+        <div class="message-content" *ngIf="message.text && message.text !== ''">
+          <span>{{ message.text }}</span>
+        </div>
+      </mat-card-content>
+      <mat-card-footer>
+        <mat-card-title-group>
+          <mat-card-subtitle>
+            {{ message.send}}
+          </mat-card-subtitle>
+        </mat-card-title-group>
+      </mat-card-footer>
+    </mat-card>
+  </mat-list>
+</div>
+

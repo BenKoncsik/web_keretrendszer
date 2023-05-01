@@ -2,12 +2,25 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>Chat Settings</mat-card-title>
-    <mat-card-subtitle>{{ title }}</mat-card-subtitle>
+    <mat-card-subtitle *ngIf="chat && !chat.group">{{ title }}</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content *ngIf="chat">
+
+  <app-new-group [selectedUser]="chatUser"
+                 (selectedUserOut)="changeSelectedUser($event)"
+                 [changeSettings]="true"
+                 [title]="title"
+                 [isGroup]="chat.group"
+                 (groupNameOut)="changeGroupName($event)">
+  </app-new-group>
+    <mat-label>Delete Chet:</mat-label>
+    <button mat-icon-button color="warn" (click)="delete()">
+      <mat-icon>delete</mat-icon>
+    </button>
 
   </mat-card-content>
   <mat-card-actions>
+
     <mat-dialog-actions align="end" *ngIf="dialog">
       <button mat-button mat-dialog-close>Cancel</button>
       <button mat-button [mat-dialog-close]="true" cdkFocusInitial>save</button>

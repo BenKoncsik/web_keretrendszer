@@ -8,18 +8,23 @@
     <span>Sign Up</span>
   </a>
   <a mat-list-item routerLink="/main" (click)="close()" *ngIf="loggedInUser">
-    <mat-icon>grid_view</mat-icon>
+    <mat-icon>home</mat-icon>
     <span>Home</span>
   </a>
 
   <a mat-list-item routerLink="/members" (click)="close()" *ngIf="loggedInUser">
-    <mat-icon>grid_view</mat-icon>
+    <mat-icon>people</mat-icon>
     <span>Members</span>
   </a>
 
   <a mat-list-item routerLink="/groups" (click)="close()" *ngIf="loggedInUser">
-    <mat-icon>grid_view</mat-icon>
+    <mat-icon>groups</mat-icon>
     <span>Groups</span>
+  </a>
+
+  <a mat-list-item routerLink="/login" (click)="logout()" *ngIf="loggedInUser">
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
   </a>
 
 </mat-nav-list>

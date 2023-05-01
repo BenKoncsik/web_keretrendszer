@@ -4,20 +4,32 @@ import { CommonModule } from '@angular/common';
 import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './main.component';
 import {MatCardModule} from "@angular/material/card";
-import {FirestoreDatePipe} from "../../shared/pipes/firestore-date-pipe.pipe";
 import {FlexLayoutModule} from "@angular/flex-layout";
-
+import { CustomDatePipePipe } from '../../shared/pipes/custume-date.pipe';
+import { MessageWallComponent } from './message-wall/message-wall.component'
+import {MatListModule} from "@angular/material/list";
+import {MatButtonModule} from "@angular/material/button";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
     MainComponent,
-    FirestoreDatePipe
+    CustomDatePipePipe,
+    MessageWallComponent
   ],
   imports: [
     CommonModule,
     MainRoutingModule,
     MatCardModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatListModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class MainModule {

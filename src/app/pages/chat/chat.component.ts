@@ -13,6 +13,13 @@ import {
 } from "@angular-devkit/build-angular/src/builders/browser-esbuild/angular/jit-resource-transformer";
 import {MatDialog} from '@angular/material/dialog';
 import {SettingsComponent} from "./settings/settings.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {DialogRef} from "@angular/cdk/dialog";
+import {ActiveChatService} from "../../shared/services/active-chat.service";
+import {ActiveChat} from "../../shared/models/ActiveChat";
+import {activate} from "@angular/fire/remote-config";
+import {ActiveMessageListItem} from "../../shared/models/ActiveMessageListItem";
+import {user} from "@angular/fire/auth";
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -31,18 +38,22 @@ export class ChatComponent implements OnInit{
   public groups!: ChatItem[];
   public isVisibleOnXs: boolean = true;
   public selectedIndex: number = 0;
+  private originalChat: ChatItem | undefined;
   @ViewChild('scrollContainer', { static: false, read: ElementRef }) private scrollContainer!: ElementRef;
+  private activeChat!: ActiveChat;
 
-  constructor(private media: MediaObserver, private route: ActivatedRoute, private userService: UserService, private chatService: ChatService,  private router: Router, private matDialog: MatDialog) {
+  constructor(private media: MediaObserver, private route: ActivatedRoute,
+              private userService: UserService, private chatService: ChatService,
+              private router: Router, private matDialog: MatDialog,
+              private _snackBar: MatSnackBar, private activeChatService: ActiveChatService) {
 
   }
     ngOnInit(): void {
+      this.loggedUser.id = JSON.parse(localStorage.getItem('user') as string).uid;
       this.media.asObservable().subscribe(change => {
         this.isVisibleOnXs = !!change.find(media => media.mqAlias == 'xs');
         console.log("xs screen:", this.isVisibleOnXs)
       });
-
-
 
     this.route.queryParams.subscribe(params => {
       if (params['cid']) {
@@ -59,8 +70,6 @@ export class ChatComponent implements OnInit{
         }
       }
     });
-
-
 
       this.userService.getAllOrderByLastActive().subscribe(users => {
         this.users = users.filter(u => u.email != this.loggedUser.email);
@@ -166,16 +175,40 @@ export class ChatComponent implements OnInit{
         this.chat = chat;
       });
   }
-  openSettings(){
-    const dialogRef = this.matDialog.open(SettingsComponent, {
-     data:{
-       chat: this.chat,
-       dialog: true,
-       loggedUser: this.loggedUser
-     }
-    })
+
+  openSettings(error: boolean){
+    if(!error) {
+     this.originalChat = JSON.parse(JSON.stringify(this.chat));
+    }
+    const dialogRef = this.dialogRefCreate();
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+      if(result && this.chat){
+        if(this.chat.name == null || this.chat.name == ''){
+          this._snackBar.open("Need a name for the group!" ,"Close");
+          this.openSettings(true);
+          return;
+        }
+        if(this.chat.members === null || this.chat.members === undefined || this.chat.members.length < 2){
+          this._snackBar.open("Need at least 2 users!" ,"Close");
+          this.openSettings(true);
+          return;
+        }
+        this.chatService.update(this.chat);
+        this.originalChat = undefined;
+      }else {
+        this.chat = this.originalChat;
+      }
     });
+  }
+
+  private dialogRefCreate() {
+    return this.matDialog.open(SettingsComponent, {
+      data:{
+        chat: this.chat,
+        dialog: true,
+        loggedUser: this.loggedUser
+      }
+    })
   }
 }
