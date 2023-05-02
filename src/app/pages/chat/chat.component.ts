@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../shared/services/user.service";
 import {ChatService} from "../../shared/services/chat.service";
@@ -20,12 +20,13 @@ import {ActiveChat} from "../../shared/models/ActiveChat";
 import {activate} from "@angular/fire/remote-config";
 import {ActiveMessageListItem} from "../../shared/models/ActiveMessageListItem";
 import {user} from "@angular/fire/auth";
+import {Subscription} from "rxjs";
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit{
+export class ChatComponent implements OnInit, OnDestroy{
   protected chatId!: string;
   private group!: boolean;
   public chat!: ChatItem | undefined;
@@ -41,6 +42,7 @@ export class ChatComponent implements OnInit{
   private originalChat: ChatItem | undefined;
   @ViewChild('scrollContainer', { static: false, read: ElementRef }) private scrollContainer!: ElementRef;
   private activeChat!: ActiveChat;
+  private subscriptions: Subscription[] = [];
 
   constructor(private media: MediaObserver, private route: ActivatedRoute,
               private userService: UserService, private chatService: ChatService,
@@ -50,11 +52,12 @@ export class ChatComponent implements OnInit{
   }
     ngOnInit(): void {
       this.loggedUser.id = JSON.parse(localStorage.getItem('user') as string).uid;
+      this.subscriptions.push(
       this.media.asObservable().subscribe(change => {
         this.isVisibleOnXs = !!change.find(media => media.mqAlias == 'xs');
         console.log("xs screen:", this.isVisibleOnXs)
-      });
-
+      }));
+      this.subscriptions.push(
     this.route.queryParams.subscribe(params => {
       if (params['cid']) {
         this.chatId = params['cid'];
@@ -69,17 +72,19 @@ export class ChatComponent implements OnInit{
           this.getGroupChat();
         }
       }
-    });
-
+    }));
+      this.subscriptions.push(
       this.userService.getAllOrderByLastActive().subscribe(users => {
         this.users = users.filter(u => u.email != this.loggedUser.email);
-      });
+      }));
+      this.subscriptions.push(
       this.chatService.getGroups(this.loggedUser.email).subscribe(chats => {
         this.groups = chats;
-      })
+      }));
   }
 
   private loadPrivateChat(){
+    this.subscriptions.push(
     this.userService.getByEmail(this.chatId).subscribe(u => {
       if (!u.empty) {
         this.anotherUsers = [];
@@ -88,7 +93,7 @@ export class ChatComponent implements OnInit{
         this.anotherUsers.push(userData);
         this.getChat();
       }
-    });
+    }));
   }
   private getChat(){
     let emails: string[] = [];
@@ -144,13 +149,14 @@ export class ChatComponent implements OnInit{
   }
 
   subScribeMessage(chatI: ChatItem): void{
+    this.subscriptions.push(
     this.chatService.getById(chatI.id).subscribe(chatItem =>{
       if(chatItem !== undefined) {
         this.chat = chatItem;
         this.scrollToBottom();
         setTimeout(() => this.scrollToBottom(), 100);
       }
-    })
+    }));
   }
 
   switchLoadChat(switchChatLoadData: string[]){
@@ -171,9 +177,10 @@ export class ChatComponent implements OnInit{
 
 
   private getGroupChat(){
+    this.subscriptions.push(
       this.chatService.getById(this.chatId).subscribe(chat =>{
         this.chat = chat;
-      });
+      }));
   }
 
   openSettings(error: boolean){
@@ -181,6 +188,7 @@ export class ChatComponent implements OnInit{
      this.originalChat = JSON.parse(JSON.stringify(this.chat));
     }
     const dialogRef = this.dialogRefCreate();
+    this.subscriptions.push(
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
       if(result && this.chat){
@@ -199,7 +207,7 @@ export class ChatComponent implements OnInit{
       }else {
         this.chat = this.originalChat;
       }
-    });
+    }));
   }
 
   private dialogRefCreate() {
@@ -211,4 +219,9 @@ export class ChatComponent implements OnInit{
       }
     })
   }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
 }
+

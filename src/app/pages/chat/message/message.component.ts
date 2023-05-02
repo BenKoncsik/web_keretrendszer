@@ -3,7 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -17,13 +17,14 @@ import {ActiveMessageListItem} from "../../../shared/models/ActiveMessageListIte
 import {ActiveChat} from "../../../shared/models/ActiveChat";
 import {ActiveChatService} from "../../../shared/services/active-chat.service";
 import {UserService} from "../../../shared/services/user.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss']
 })
-export class MessageComponent implements OnInit, OnChanges{
+export class MessageComponent implements OnInit, OnChanges, OnDestroy{
   messageInput: string = '';
   @Input() loggedUser!: User;
   @Input() chat!: ChatItem | undefined;
@@ -31,6 +32,7 @@ export class MessageComponent implements OnInit, OnChanges{
   @ViewChild('scrollContainer', {static: false, read: ElementRef}) private scrollContainer!: ElementRef;
   @ViewChild('fileInput ', {static: false, read: ElementRef}) private fileInput!: ElementRef;
   private activeChat!: ActiveChat;
+  private subscriptions: Subscription[] = [];
   constructor(private uploadImageService: UploadImageService, private activeChatService: ActiveChatService,
               private userService: UserService) {
   }
@@ -40,6 +42,7 @@ export class MessageComponent implements OnInit, OnChanges{
       const event = this.fileInput.nativeElement.files.length ? { target: this.fileInput.nativeElement } : null;
       let img: string = "";
       if(event){
+        this.subscriptions.push(
         this.uploadImageService.uploadFile(event).subscribe(url => {
           if(url) {
             url.subscribe(u => {
@@ -61,7 +64,7 @@ export class MessageComponent implements OnInit, OnChanges{
             this.sendMessageEmitter.emit(newMessage);
           }
           this.messageInput = "";
-        });
+        }));
       }else {
         const newMessage: Message_1 = {
           text: this.messageInput,
@@ -125,6 +128,7 @@ export class MessageComponent implements OnInit, OnChanges{
       }
 
       if (this.chat) {
+        this.subscriptions.push(
         this.activeChatService.getById(this.loggedUser.id).subscribe(activeChat => {
           if (activeChat) {
             this.activeChat = activeChat;
@@ -143,10 +147,14 @@ export class MessageComponent implements OnInit, OnChanges{
             this.activeChat = aC;
             this.activeChatService.addNew(aC);
           }
-        })
+        }));
       }
 
 
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

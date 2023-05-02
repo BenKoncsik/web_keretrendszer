@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy{
   loadingObservation?: Observable<boolean>;
 
   loading: boolean = false;
+  private subscriptions: Subscription[] = [];
 
   constructor(private router: Router, private authService: AuthService, private userService: UserService, private snackBar: MatSnackBar) { }
 

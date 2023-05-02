@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {User} from "../../../shared/models/User";
 import {UserService} from "../../../shared/services/user.service";
-import {map, Observable, startWith} from "rxjs";
+import {map, Observable, startWith, Subscription} from "rxjs";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ChatItem} from "../../../shared/models/ChatItem";
@@ -16,7 +16,7 @@ import {ChatService} from "../../../shared/services/chat.service";
   templateUrl: './new-group.component.html',
   styleUrls: ['./new-group.component.scss']
 })
-export class NewGroupComponent implements OnInit{
+export class NewGroupComponent implements OnInit, OnDestroy{
   @Input() public title: string = '';
   public groupName: FormControl<string | null> = new FormControl(this.title);
   public users: User[] = [];
@@ -29,6 +29,7 @@ export class NewGroupComponent implements OnInit{
   @Input() public isGroup: boolean = true;
   @Input() public changeSettings: boolean = false;
   @Output() public groupNameOut: EventEmitter<string> = new EventEmitter<string>();
+  private subscriptions: Subscription[] = [];
 
   constructor(private userService: UserService, private _snackBar: MatSnackBar, private chatService: ChatService) {
    this.initSearchControl();
@@ -103,16 +104,17 @@ export class NewGroupComponent implements OnInit{
 
 
   ngOnInit(): void {
+    this.subscriptions.push(
     this.userService.getAll().subscribe(user =>{
       this.users = user.filter(u => u.email != this.loggedUser.email);
-    });
+    }));
     this.groupName.setValue(this.title);
-
+    this.subscriptions.push(
     this.groupName.valueChanges.subscribe(name => {
       if (name) {
         this.groupNameOut.emit(name);
       }
-    });
+    }));
 
   }
 
@@ -124,7 +126,9 @@ export class NewGroupComponent implements OnInit{
     return user ? user.name + " - " + user.email : '';
   }
 
-
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
 
 
 }

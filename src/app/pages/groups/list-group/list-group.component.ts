@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ChatService} from "../../../shared/services/chat.service";
 import {ChatItem} from "../../../shared/models/ChatItem";
 import {User} from "../../../shared/models/User";
@@ -8,30 +8,33 @@ import {user} from "@angular/fire/auth";
 import {ActiveChat} from "../../../shared/models/ActiveChat";
 import {ActiveChatService} from "../../../shared/services/active-chat.service";
 import {activate} from "@angular/fire/remote-config";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-list-group',
   templateUrl: './list-group.component.html',
   styleUrls: ['./list-group.component.scss']
 })
-export class ListGroupComponent implements OnInit{
+export class ListGroupComponent implements OnInit, OnDestroy{
 
   public groupsChat: ChatItem[] = [];
   public activeChats!: ActiveChat;
   private loggedUser: User = JSON.parse(localStorage.getItem('user') as string);
+  private subscriptions: Subscription[] = [];
   constructor(private chatService: ChatService, private router: Router, private _snackBar: MatSnackBar, private activeChatService: ActiveChatService) {}
 
   ngOnInit(): void {
     this.loggedUser.id = JSON.parse(localStorage.getItem('user') as string).uid;
+    this.subscriptions.push(
     this.chatService.getGroups(this.loggedUser.email).subscribe(chats => {
       this.groupsChat = chats;
-    });
-
+    }));
+    this.subscriptions.push(
     this.activeChatService.getById(this.loggedUser.id).subscribe(activateChat =>{
       if(activateChat){
         this.activeChats = activateChat;
       }
-    });
+    }));
   }
 
 
@@ -66,5 +69,9 @@ export class ListGroupComponent implements OnInit{
       }
     }
     return "";
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

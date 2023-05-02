@@ -8,20 +8,21 @@ import {user} from "@angular/fire/auth";
 import {ChatService} from "../../../shared/services/chat.service";
 import {Router} from "@angular/router";
 import {ActiveChatService} from "../../../shared/services/active-chat.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
-export class SettingsComponent implements OnInit, OnChanges{
+export class SettingsComponent implements OnInit, OnChanges, OnDestroy{
 
   @Input() chat: ChatItem | undefined;
   @Input() loggedUser: User | undefined;
   @Input() dialog: boolean | undefined = false;
   public title: string = "";
   public chatUser: User[] = [];
-
+  private subscriptions: Subscription[] = [];
 
 
   constructor(private userService: UserService,
@@ -49,13 +50,14 @@ export class SettingsComponent implements OnInit, OnChanges{
       }
       this.chatUser = [];
       for (let email of this.chat.members){
+        this.subscriptions.push(
         this.userService.getByEmail(email).subscribe(user =>{
             if (!user.empty) {
               const userDoc = user.docs[0];
               const userData: User = userDoc.data() as User;
               if(!this.chatUser.includes(userData) && !this.chatUser.find(u => u.email == userData.email)) this.chatUser.push(userData);
             }
-        });
+        }))
       }
     }
   }
@@ -87,17 +89,22 @@ export class SettingsComponent implements OnInit, OnChanges{
 
   delete() {
       if(this.chat) {
+        this.subscriptions.push(
         this.activeChatService.getById(this.loggedUser!.id).subscribe(activeChat =>{
           if(activeChat){
             activeChat.activeChats = activeChat.activeChats.filter(chat => chat.cId !== this.chat?.id)
             this.activeChatService.update(activeChat);
           }
-        })
+        }))
         this.chatService.delete(this.chat.id);
         if (this.dialogRef) {
           this.dialogRef.close();
         }
         this.router.navigateByUrl("/main");
       }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }
