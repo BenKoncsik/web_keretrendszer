@@ -22,12 +22,14 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire/compat';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CustomDatePipePipe } from './shared/pipes/custume-date.pipe';
+import { UserNameByEmailPipe } from './shared/pipes/user-name-by-email.pipe';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
+    UserNameByEmailPipe,
     // CustomDatePipePipe,
   ],
   imports: [

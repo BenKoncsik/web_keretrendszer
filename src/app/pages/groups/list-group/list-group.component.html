@@ -5,6 +5,7 @@
         <mat-card-title>{{ chat.name }}</mat-card-title>
         <mat-card-subtitle  *ngIf="!shouldDisplaySubtitle(chat.id)">{{ chat.members[0] }}</mat-card-subtitle>
         <mat-card-subtitle *ngIf="shouldDisplaySubtitle(chat.id)">{{ shouldDisplayUserEmail(chat.id) }}</mat-card-subtitle>
+<!--        <mat-card-subtitle *ngIf="shouldDisplaySubtitle(chat.id)">{{ shouldDisplayUserEmail(chat.id) | userNameByEmail  }}</mat-card-subtitle>-->
         <mat-card-subtitle *ngIf="shouldDisplaySubtitle(chat.id)">{{ shouldDisplayLastMessage(chat.id) }}</mat-card-subtitle>
       </mat-card-title-group>
     </mat-card-header>

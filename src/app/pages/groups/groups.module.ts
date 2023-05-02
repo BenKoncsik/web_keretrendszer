@@ -17,13 +17,15 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
 import {MatCardModule} from "@angular/material/card";
+import {UserNameByEmailPipe} from "../../shared/pipes/user-name-by-email.pipe";
 
 
 @NgModule({
     declarations: [
         GroupsComponent,
         NewGroupComponent,
-        ListGroupComponent
+        ListGroupComponent,
+        // UserNameByEmailPipe
     ],
     exports: [
         NewGroupComponent

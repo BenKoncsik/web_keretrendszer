@@ -12,11 +12,13 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {UserNameByEmailPipe} from "../../shared/pipes/user-name-by-email.pipe";
 
 @NgModule({
   declarations: [
     MainComponent,
     CustomDatePipePipe,
+    UserNameByEmailPipe,
     MessageWallComponent
   ],
   imports: [
